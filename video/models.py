@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
+from django.core.validators import MinValueValidator
 
 from datetime import date
 
@@ -20,7 +21,7 @@ def is_video_older_than_1_year(value):
 class Video(models.Model):
     title = models.CharField(max_length=100)
     date_uploaded = models.DateField(auto_now_add=False, auto_now=False, validators=[is_video_older_than_1_year])
-    views = models.PositiveIntegerField()
+    views = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     themes = models.ManyToManyField(Theme)
 
     def __str__(self):
